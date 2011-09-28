@@ -51,9 +51,9 @@ describe JobSequence do
 
   it "should raise an error if a job depends on itself" do
     expect {
-      result = JobSequence.calculate(%q{ a =>
-                                         b =>
-                                         c => c })
+      JobSequence.calculate(%q{ a =>
+                                b =>
+                                c => c })
     }.to raise_error(ArgumentError) { |error|
       error.message.should == "Job cannot depend upon themselves"
     }
@@ -61,12 +61,12 @@ describe JobSequence do
 
   it "should raise an error if a circular dependency is added" do
     expect {
-      result = JobSequence.calculate(%q{ a =>
-                                         b => c
-                                         c => f
-                                         d => a
-                                         e =>
-                                         f => b })
+      JobSequence.calculate(%q{ a =>
+                                b => c
+                                c => f
+                                d => a
+                                e =>
+                                f => b })
     }.to raise_error(ArgumentError) { |error|
       error.message.should == "Job sequence contains a circular dependency"
     }

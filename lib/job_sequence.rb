@@ -13,6 +13,9 @@ class JobSequence
   end
 
   def result
+    raise ArgumentError, "Job cannot depend upon themselves" if self_dependency_exists?
+    raise ArgumentError, "Job sequence contains a circular dependency" if circular_dependency_exists?
+
     sequence.join
   end
 
@@ -56,9 +59,6 @@ class JobSequence
   end
 
   def sequence
-    raise ArgumentError, "Job cannot depend upon themselves" if self_dependency_exists?
-    raise ArgumentError, "Job sequence contains a circular dependency" if circular_dependency_exists?
-
     jobs.reduce([]) do |sequence, job|
       sequence.push(job.name) unless sequence.include?(job.name)
 
