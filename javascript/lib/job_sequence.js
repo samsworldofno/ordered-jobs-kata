@@ -7,29 +7,28 @@ var JobSequence = function JobSequence(input){
 		return new JobList(input);
 	}
 	
+	this.validate_input = function(){
+		if(this.job_list().self_dependency_exists()) throw new Error("jobs cannot depend upon themselves")
+	}
+	
 	this.output = function(){
-		var sequence = [];
+		this.validate_input();
 
-		if(this.job_list().self_dependency_exists()){
-			throw new Error("jobs cannot depend upon themselves")
-		}
-		
+		var sequence = [];
 		var jobs = this.job_list().jobs();
 		
 		for(var i = 0; i < jobs.length; i++) {
 			var job = jobs[i];
 
-			if(sequence.indexOf(job.name) == -1) {
-				sequence.push(job.name);
-			}
+			if(sequence.indexOf(job.name) == -1) sequence.push(job.name);
 
 			if(job.dependency) {
-				if(sequence.indexOf(job.dependency) > -1) {
-					sequence.splice(sequence.indexOf(job.dependency),1);
-				}
+				var dependent_position;
+				
+				dependent_position = sequence.indexOf(job.dependency)
+				if(dependent_position > -1)	sequence.splice(dependent_position,1);
 
-				var dependent_position = sequence.indexOf(job.name);
-
+				dependent_position = sequence.indexOf(job.name);
 				sequence.splice(dependent_position, 0, job.dependency);			
 			}
 		}
