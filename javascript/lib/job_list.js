@@ -28,13 +28,6 @@ var JobList = function JobList(input){
 		
 		return false;
 	}
-
-  // def circular_dependency_exists?
-  //   jobs.any? do |job|
-  //     (dependents(job) & depends_upon(job)).size > 0
-  //   end
-  // end
-
 	
 	this.circular_dependency_exists = function(){
 		var jobs = this.jobs();
@@ -43,21 +36,20 @@ var JobList = function JobList(input){
 			var job = jobs[i];
 			
 			var depends_upon = this.depends_upon(job);
-			// var dependents = this.dependents(job);
+			var dependents = this.dependents(job);
 			
-			// circular = dependents.some(function(el) {
-				// return depends_upon.indexOf(el) > -1
-			// });
+			circular = dependents.some(function(el) {
+				return depends_upon.indexOf(el) > -1
+			});
 			
-			// if(circular) return true;
-			
+			if(circular) return true;
 		}
 
 		return false;
 	}
 	
-	this.dependents = function(target){
-		var dependents = [];
+	this.dependents = function(target, dependents){
+		var dependents = dependents || [];
 		var jobs = this.jobs();
 
 		for(var i = 0; i < jobs.length; i++){
@@ -68,27 +60,26 @@ var JobList = function JobList(input){
 			dependents.push(job.name);
 			
 			if(dependents.indexOf(job.dependency) == -1) {
-				dependents.push.apply(dependents, this.dependents(job, dependents))
+				dependents.concat(this.dependents(job, dependents))
 			}
 		}
 		
 		return dependents;
 	}
 
-	this.depends_upon = function(target){
-		var depends_upon = [];
+	this.depends_upon = function(target, depends_upon){	
+		var depends_upon = depends_upon || [];
 		var jobs = this.jobs();
 
 		for(var i = 0; i < jobs.length; i++){
 			var job = jobs[i];
 
 			if(job.name != target.dependency) continue;
-
-			depends_upon.push(job.name)
+			depends_upon.push(job.name);
 			
 			if(depends_upon.indexOf(job.dependency) == -1){
-				depends_upon.push.apply(depends_upon, this.depends_upon(job, depends_upon))
-			}
+				depends_upon.concat(this.depends_upon(job, depends_upon))
+			} 
 		}
 		
 		return depends_upon;

@@ -9,6 +9,7 @@ var JobSequence = function JobSequence(input){
 	
 	this.validate_input = function(){
 		if(this.job_list().self_dependency_exists()) throw new Error("jobs cannot depend upon themselves")
+		if(this.job_list().circular_dependency_exists()) throw new Error("input string cannot create a circular dependency")
 	}
 	
 	this.output = function(){
