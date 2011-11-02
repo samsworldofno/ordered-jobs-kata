@@ -75,15 +75,10 @@ describe("JobList", function(){
 		  var input = '	a => b\n\
 	                  b => a';
 	
-			console.log("<<<<<<<<<<<")
-	
 			var list = new JobList(input)
 			var target = list.jobs()[1]
 			
 			expect(list.depends_upon(target)).toEqual(['a', 'b']);
-			
-			console.log(">>>>>>>>>>>>>>>")
-			
 		});
 	});
 });
