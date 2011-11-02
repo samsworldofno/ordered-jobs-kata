@@ -85,4 +85,17 @@ describe("JobSequence", function(){
 
 		expect(function(){ sequence.output() }).toThrow('jobs cannot depend upon themselves');
 	});
+	
+	it("should raise an error if a circular dependency is added", function() {
+	  var input = ' a =>   \n\
+                  b => c \n\
+                  c => f \n\
+                  d => a \n\
+                  e =>   \n\
+                  f => b'
+	
+    var sequence = new JobSequence(input)
+	
+	  expect(function(){ sequence.output() }).toThrow('input string cannot create a circular dependency')
+	});
 });
