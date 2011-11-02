@@ -1,4 +1,4 @@
-var Job = function Job(input){
+var Job = function Job(input) {
 	var instruction;
 	
 	input = input.replace(/\s*/g, '');
@@ -8,4 +8,4 @@ var Job = function Job(input){
 	this.dependency = instruction[1] ? instruction[1] : null;	
 }
 
-exports.Job = Job
+exports.Job = Job;

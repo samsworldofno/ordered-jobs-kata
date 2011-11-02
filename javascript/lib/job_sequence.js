@@ -1,18 +1,18 @@
 var JobList = require('../lib/job_list.js').JobList
 
-var JobSequence = function JobSequence(input){
-	this.input = input
+var JobSequence = function JobSequence(input) {
+	this.input = input;
 
-	this.job_list = function(){
+	this.job_list = function() {
 		return new JobList(input);
 	}
 	
-	this.validate_input = function(){
-		if(this.job_list().self_dependency_exists()) throw new Error("jobs cannot depend upon themselves")
-		if(this.job_list().circular_dependency_exists()) throw new Error("input string cannot create a circular dependency")
+	this.validate_input = function() {
+		if(this.job_list().self_dependency_exists()) throw new Error("jobs cannot depend upon themselves");
+		if(this.job_list().circular_dependency_exists()) throw new Error("input string cannot create a circular dependency");
 	}
 	
-	this.output = function(){
+	this.output = function() {
 		this.validate_input();
 
 		var sequence = [];
@@ -26,7 +26,7 @@ var JobSequence = function JobSequence(input){
 			if(job.dependency) {
 				var dependent_position;
 				
-				dependent_position = sequence.indexOf(job.dependency)
+				dependent_position = sequence.indexOf(job.dependency);
 				if(dependent_position > -1)	sequence.splice(dependent_position,1);
 
 				dependent_position = sequence.indexOf(job.name);

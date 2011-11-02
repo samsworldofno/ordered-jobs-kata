@@ -1,7 +1,7 @@
 var Job = require('../lib/job.js').Job
 
-describe("Job", function(){
-	it("should extract a job's name from the input string", function() {
+describe("Job", function() {
+	it("should extract a job's name from the input string", function(){
 		var job = new Job("a =>");
 		expect(job.name).toEqual('a');
 	});
