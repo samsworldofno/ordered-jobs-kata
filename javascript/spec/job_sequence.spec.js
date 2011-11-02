@@ -75,4 +75,15 @@ describe("JobSequence", function(){
 		expect(result).toHaveJobsInThisOrder('b', 'e')	  
 		expect(result).toHaveJobsInThisOrder('a', 'd')	  	
 	});
+	
+	it("should raise an error if a job depends on itself", function() {
+	  var input = '	a => \n\
+                  b => \n\
+                  c => c';	  
+
+    var sequence = new JobSequence(input);
+
+		expect(sequence.output).toThrow('jobs cannot depend upon themselves');
+
+	});
 });
