@@ -3,14 +3,18 @@ var JobList = require('../lib/job_list.js').JobList
 var JobSequence = function JobSequence(input){
 	this.input = input
 
-	this.jobs_list = function(){
+	this.job_list = function(){
 		return new JobList(input);
 	}
 	
 	this.output = function(){
 		var sequence = [];
+
+		if(this.job_list().self_dependency_exists()){
+			throw new Error("jobs cannot depend upon themselves")
+		}
 		
-		var jobs = this.jobs_list().jobs();
+		var jobs = this.job_list().jobs();
 		
 		for(var i = 0; i < jobs.length; i++) {
 			var job = jobs[i];

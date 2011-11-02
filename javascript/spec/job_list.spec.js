@@ -6,4 +6,14 @@ describe("JobList", function() {
 		
 		expect(list.jobs().length).toEqual(1);
   });
+
+	it("should know when a circular dependency exists", function(){
+	  var input = '	a => \n\
+                  b => \n\
+                  c => c';
+
+	  var list = new JobList(input);
+	
+		expect(list.self_dependency_exists()).toBeTruthy();
+	});
 });

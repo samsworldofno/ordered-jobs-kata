@@ -83,7 +83,6 @@ describe("JobSequence", function(){
 
     var sequence = new JobSequence(input);
 
-		expect(sequence.output).toThrow('jobs cannot depend upon themselves');
-
+		expect(function(){ sequence.output() }).toThrow('jobs cannot depend upon themselves');
 	});
 });
