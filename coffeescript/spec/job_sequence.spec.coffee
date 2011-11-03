@@ -53,14 +53,14 @@ describe "JobSequence", ->
               f =>
             '''
 
-  		result = new JobSequence(input).output()
+  	result = new JobSequence(input).output()
 
-  		expect(result).toContainAllOf ['a', 'b', 'c', 'd', 'e', 'f']
-  		expect(result).toHaveJobsInThisOrder 'f', 'c'
-  		expect(result).toHaveJobsInThisOrder 'c', 'b'
-  		expect(result).toHaveJobsInThisOrder 'b', 'e'
-  		expect(result).toHaveJobsInThisOrder 'a', 'd'
-  		
+  	expect(result).toContainAllOf ['a', 'b', 'c', 'd', 'e', 'f']
+  	expect(result).toHaveJobsInThisOrder 'f', 'c'
+  	expect(result).toHaveJobsInThisOrder 'c', 'b'
+  	expect(result).toHaveJobsInThisOrder 'b', 'e'
+  	expect(result).toHaveJobsInThisOrder 'a', 'd'
+	
   it "should raise an error if a job depends on itself", ->
     input = '''
               a =>
