@@ -4,20 +4,20 @@ describe("JobSequence", function() {
 	beforeEach(function(){	
 	  this.addMatchers({
 
-	    toContainAllOf: function(expected) {
+			toContainAllOf: function(expected) {
 				for(var i = 0; i < expected.length; i++) {
 					if(this.actual.indexOf(expected[i]) < 0){
 						return false;
 					}
 				}
 				return true;
-	    },
+			},
 	
 			toHaveJobsInThisOrder: function(a, b) {
 				return this.actual.indexOf(a) < this.actual.indexOf(b)
 			}
 
-	  });
+		});
 	});
 
 	it("should return a blank string when a blank string is entered", function() {
@@ -36,20 +36,20 @@ describe("JobSequence", function() {
 
 	it("should return a multiple jobs in non-significant order when there are no dependencies", function() {
 		var input = '	a => \n\
-                  b => \n\
-                  c => ';
+									b => \n\
+									c => ';
 		var sequence = new JobSequence(input);
 
 		expect(sequence.output()).toContainAllOf(['a', 'b', 'c']);
 	})
 
 	it("should return multiple jobs in a significant order when dependencies exist", function() {
-	  var input = '	a => \n\
-                  b => c \n\
-                  c =>';
+		var input = '	a => \n\
+									b => c \n\
+									c =>';
 		var sequence = new JobSequence(input);
 
-  	result = sequence.output();
+		result = sequence.output();
 
 		expect(result).toContainAllOf(['a', 'b', 'c']);
 		expect(result).toHaveJobsInThisOrder('c', 'b');
@@ -57,15 +57,15 @@ describe("JobSequence", function() {
 	
 	it("should return multiple jobs in a significant order when multiple dependencies exist", function() {
 		var input = ' a => \n\
-                  b => c \n\
-                  c => f \n\
-                  d => a \n\
-                  e => b \n\
-                  f =>';
+									b => c \n\
+									c => f \n\
+									d => a \n\
+									e => b \n\
+									f =>';
 
 		var sequence = new JobSequence(input);
 
-  	result = sequence.output();
+		result = sequence.output();
 
 		expect(result).toContainAllOf(['a', 'b', 'c', 'd', 'e', 'f']);
 		
@@ -76,25 +76,25 @@ describe("JobSequence", function() {
 	});
 	
 	it("should raise an error if a job depends on itself", function() {
-	  var input = '	a => \n\
-                  b => \n\
-                  c => c';	  
+		var input = '	a => \n\
+									b => \n\
+									c => c';	  
 
-    var sequence = new JobSequence(input);
+		var sequence = new JobSequence(input);
 
 		expect(function(){ sequence.output() }).toThrow('jobs cannot depend upon themselves');
 	});
 	
 	it("should raise an error if a circular dependency is added", function() {
-	  var input = ' a =>   \n\
-                  b => c \n\
-                  c => f \n\
-                  d => a \n\
-                  e =>   \n\
-                  f => b';
+		var input = ' a =>   \n\
+									b => c \n\
+									c => f \n\
+									d => a \n\
+									e =>   \n\
+									f => b';
 	
-    var sequence = new JobSequence(input);
+		var sequence = new JobSequence(input);
 	
-	  expect(function() { sequence.output() }).toThrow('input string cannot create a circular dependency');
+		expect(function() { sequence.output() }).toThrow('input string cannot create a circular dependency');
 	});
 });
