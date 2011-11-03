@@ -1,80 +1,75 @@
+var $ = require('jquery'); 
 var Job = require('../lib/job.js').Job
 
 var JobList = function JobList(input) {
 	this.input = input;
 
 	this.jobs = function() {
-		var result = [];
-		
-		var lines = this.input.split(/\n/g);
-		for(var i = 0; i < lines.length; i++){
-			var job = new Job(lines[i]);
-			result.push(job);
-		}
-
-		return result;
+	  var lines = this.input.split(/\n/g)
+	  
+		return $.map(lines, function(line) {
+      return new Job(line);
+		});
 	}
 	
 	this.self_dependency_exists = function() {
-		for(var i = 0; i < this.jobs().length; i++){
-			var job = this.jobs()[i];
-			
-			if(job.name == job.dependency){
-				return true;
-			}
-		}
-		
-		return false;
+    var result = false;
+
+	  $.each(this.jobs(), function(index, job) {
+			if(job.name == job.dependency) result = true;
+	  });
+	  
+	  return result;
 	}
 	
 	this.circular_dependency_exists = function() {
-		for(var i = 0; i < this.jobs().length; i++) {
-			var job = this.jobs()[i];
-			
-			var depends_upon = this.depends_upon(job);
-			var dependents = this.dependents(job);
+	  var result = false;
+	  var list = this;
+	  
+	  $.each(this.jobs(), function(index, job) {
+			var depends_upon = list.depends_upon(job);
+			var dependents = list.dependents(job);
 			
 			circular = dependents.some(function(el) {
 				return depends_upon.indexOf(el) > -1
 			});
 			
-			if(circular) return true;
-		}
-
-		return false;
+			if(circular) result = true;
+	  });
+	  
+	  return result;
 	}
 	
 	this.dependents = function(target, dependents) {
 		var dependents = dependents || [];
+		var list = this;
 
-		for(var i = 0; i < this.jobs().length; i++) {
-			var job = this.jobs()[i];
+    $.each(this.jobs(), function(index, job) {
+			if(job.dependency != target.name) return;
 
-			if(job.dependency != target.name) continue;
+  		dependents.push(job.name);
 
-			dependents.push(job.name);
-			
-			if(dependents.indexOf(job.dependency) == -1) {
-				dependents.concat(this.dependents(job, dependents));
-			}
-		}
+  		if(dependents.indexOf(job.dependency) == -1) {
+  			dependents.concat(list.dependents(job, dependents));
+  		}
+    });
 		
 		return dependents;
 	}
 
 	this.depends_upon = function(target, depends_upon) {	
 		var depends_upon = depends_upon || [];
+		var list = this;
+		
+		$.each(this.jobs(), function(index, job) {
+			if(job.name != target.dependency) return;		  
 
-		for(var i = 0; i < this.jobs().length; i++) {
-			var job = this.jobs()[i];
-
-			if(job.name != target.dependency) continue;
 			depends_upon.push(job.name);
-			
+
 			if(depends_upon.indexOf(job.dependency) == -1) {
-				depends_upon.concat(this.depends_upon(job, depends_upon));
+				depends_upon.concat(list.depends_upon(job, depends_upon));
 			} 
-		}
+		});
 		
 		return depends_upon;
 	}

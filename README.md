@@ -17,7 +17,12 @@ To run the tests:
 
 Implementation in JavaScript, BDD (in the style of TDD as if you meant it) with Jasmine.
 
-To run the tests (with jasmine-node):
+### Installation
+
+    # npm install jasmine-node
+    $ npm install jquery
+
+To run the tests:
 
     $ cd javascript
     $ jasmine-node spec/

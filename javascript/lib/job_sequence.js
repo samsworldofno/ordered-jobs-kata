@@ -1,3 +1,4 @@
+var $ = require('jquery'); 
 var JobList = require('../lib/job_list.js').JobList
 
 var JobSequence = function JobSequence(input) {
@@ -35,18 +36,16 @@ var JobSequence = function JobSequence(input) {
 	}
 	
 	this.calculate = function() {
-		var jobs = this.job_list().jobs();
-		
-		for(var i = 0; i < jobs.length; i++) {
-			var job = jobs[i];
-			
-			this.add(job.name);
+	  var sequence = this;
+	  
+	  $.each(this.job_list().jobs(), function(index, job){
+      sequence.add(job.name);
 
-			if(job.dependency) {
-		    this.delete(job.dependency);		    
-		    this.add_before(job.name, job.dependency)
-			}
-		}
+      if(job.dependency) {
+        sequence.delete(job.dependency);        
+        sequence.add_before(job.name, job.dependency)
+      }
+	  });
 	}
 }
 
