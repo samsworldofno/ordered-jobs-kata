@@ -21,7 +21,7 @@ describe "JobSequence", ->
     sequence = new JobSequence(input)
     expect(sequence.output()).toEqual 'a'
 
-  it "should return a multiple jobs in non-significant order when there are no dependencies", ->
+  it "should return multiple jobs in non-significant order when there are no dependencies", ->
     input = '''
               a => 
               b => 
