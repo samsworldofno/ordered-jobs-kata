@@ -17,7 +17,7 @@ To run the tests:
 
 Implementation in JavaScript, BDD (in the style of TDD as if you meant it) with Jasmine.
 
-To run the tests (with jasmine-node)
+To run the tests (with jasmine-node):
 
     $ cd javascript
     $ jasmine-node spec/
