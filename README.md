@@ -26,3 +26,16 @@ To run the tests:
 
     $ cd javascript
     $ jasmine-node spec/
+
+## CoffeeScript
+
+Implementation in CoffeeScript, straight port from JavaScript.
+
+### Installation 
+
+As above for JavaScript
+
+To run the tests:
+
+    $ cd coffeescript
+    $ jasmine-node spec/ --coffee
