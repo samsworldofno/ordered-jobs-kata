@@ -5,7 +5,7 @@ describe "JobSequence", ->
     @addMatchers
       toContainAllOf: (expected) ->
         for letter in expected
-          false unless letter in @actual
+          return false unless letter in @actual
         true
 
       toHaveJobsInThisOrder: (a, b) ->
