@@ -31,7 +31,6 @@ describe "JobSequence", ->
     sequence = new JobSequence(input)
     expect(sequence.output()).toContainAllOf ['a', 'b', 'c']
 
-
   it "should return multiple jobs in a significant order when dependencies exist", ->
     input = '''
               a => 
