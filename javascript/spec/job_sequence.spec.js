@@ -2,7 +2,7 @@ var JobSequence = require('../lib/job_sequence').JobSequence;
 
 describe("JobSequence", function() {
 	beforeEach(function(){	
-	  this.addMatchers({
+		this.addMatchers({
 
 			toContainAllOf: function(expected) {
 				for(var i = 0; i < expected.length; i++) {
@@ -25,7 +25,7 @@ describe("JobSequence", function() {
 		var sequence = new JobSequence(input);
 
 		expect(sequence.output()).toEqual('');
-  });
+	});
 
 	it("should return a single job when that single job is passed", function() {
 		var input = ' a => ';
@@ -35,7 +35,7 @@ describe("JobSequence", function() {
 	})
 
 	it("should return a multiple jobs in non-significant order when there are no dependencies", function() {
-		var input = '	a => \n\
+		var input = ' a => \n\
 									b => \n\
 									c => ';
 		var sequence = new JobSequence(input);
@@ -44,7 +44,7 @@ describe("JobSequence", function() {
 	})
 
 	it("should return multiple jobs in a significant order when dependencies exist", function() {
-		var input = '	a => \n\
+		var input = ' a => \n\
 									b => c \n\
 									c =>';
 		var sequence = new JobSequence(input);
@@ -71,14 +71,14 @@ describe("JobSequence", function() {
 		
 		expect(result).toHaveJobsInThisOrder('f', 'c');
 		expect(result).toHaveJobsInThisOrder('c', 'b');
-		expect(result).toHaveJobsInThisOrder('b', 'e');	  
-		expect(result).toHaveJobsInThisOrder('a', 'd');	  	
+		expect(result).toHaveJobsInThisOrder('b', 'e');		
+		expect(result).toHaveJobsInThisOrder('a', 'd');			
 	});
 	
 	it("should raise an error if a job depends on itself", function() {
-		var input = '	a => \n\
+		var input = ' a => \n\
 									b => \n\
-									c => c';	  
+									c => c';		
 
 		var sequence = new JobSequence(input);
 
@@ -86,11 +86,11 @@ describe("JobSequence", function() {
 	});
 	
 	it("should raise an error if a circular dependency is added", function() {
-		var input = ' a =>   \n\
+		var input = ' a =>	 \n\
 									b => c \n\
 									c => f \n\
 									d => a \n\
-									e =>   \n\
+									e =>	 \n\
 									f => b';
 	
 		var sequence = new JobSequence(input);
