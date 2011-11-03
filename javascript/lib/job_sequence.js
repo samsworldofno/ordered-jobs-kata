@@ -2,6 +2,7 @@ var JobList = require('../lib/job_list.js').JobList
 
 var JobSequence = function JobSequence(input) {
 	this.input = input;
+	this.sequence = [];
 
 	this.job_list = function() {
 		return new JobList(input);
@@ -14,28 +15,39 @@ var JobSequence = function JobSequence(input) {
 	
 	this.output = function() {
 		this.validate_input();
-
-		var sequence = [];
+		this.calculate();
+		
+		return this.sequence.join();
+	} 
+	
+	this.delete = function(job) {
+		var dependent_position = this.sequence.indexOf(job);
+		if(dependent_position > -1) this.sequence.splice(dependent_position,1);
+	}
+	
+	this.add = function(name) {
+	  if(this.sequence.indexOf(name) == -1) this.sequence.push(name);
+	}
+	
+	this.add_before = function(name, dependency) {
+		var dependent_position = this.sequence.indexOf(name);
+		this.sequence.splice(dependent_position, 0, dependency);				  
+	}
+	
+	this.calculate = function() {
 		var jobs = this.job_list().jobs();
 		
 		for(var i = 0; i < jobs.length; i++) {
 			var job = jobs[i];
-
-			if(sequence.indexOf(job.name) == -1) sequence.push(job.name);
+			
+			this.add(job.name);
 
 			if(job.dependency) {
-				var dependent_position;
-				
-				dependent_position = sequence.indexOf(job.dependency);
-				if(dependent_position > -1) sequence.splice(dependent_position,1);
-
-				dependent_position = sequence.indexOf(job.name);
-				sequence.splice(dependent_position, 0, job.dependency);			
+		    this.delete(job.dependency);		    
+		    this.add_before(job.name, job.dependency)
 			}
 		}
-
-		return sequence.join('');		
-	} 
+	}
 }
 
 exports.JobSequence = JobSequence;
