@@ -5,7 +5,7 @@ var Job = function Job(input) {
 	instruction = input.split(/=>/);
 
 	this.name = instruction[0];
-	this.dependency = instruction[1] ? instruction[1] : null;	
+	this.dependency = instruction[1] ? instruction[1] : null; 
 }
 
 exports.Job = Job;

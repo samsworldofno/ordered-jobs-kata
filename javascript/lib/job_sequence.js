@@ -27,7 +27,7 @@ var JobSequence = function JobSequence(input) {
 				var dependent_position;
 				
 				dependent_position = sequence.indexOf(job.dependency);
-				if(dependent_position > -1)	sequence.splice(dependent_position,1);
+				if(dependent_position > -1) sequence.splice(dependent_position,1);
 
 				dependent_position = sequence.indexOf(job.name);
 				sequence.splice(dependent_position, 0, job.dependency);			
@@ -35,7 +35,7 @@ var JobSequence = function JobSequence(input) {
 		}
 
 		return sequence.join('');		
-	}	
+	} 
 }
 
 exports.JobSequence = JobSequence;

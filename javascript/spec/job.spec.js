@@ -7,7 +7,7 @@ describe("Job", function() {
 	});
 	
 	it("should extract a job's dependency from the input string", function() {
-	  var job;
+		var job;
 
 		job = new Job("a => b");
 		expect(job.dependency).toEqual('b');
