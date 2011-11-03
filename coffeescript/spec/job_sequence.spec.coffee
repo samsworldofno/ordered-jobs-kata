@@ -67,6 +67,7 @@ describe "JobSequence", ->
               b =>
               c => c
             '''
+
     sequence = new JobSequence(input);
     expect( -> sequence.output() ).toThrow 'jobs cannot depend upon themselves'
 
