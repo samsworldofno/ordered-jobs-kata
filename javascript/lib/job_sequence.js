@@ -26,7 +26,7 @@ var JobSequence = function JobSequence(input) {
 	}
 	
 	this.add = function(name) {
-	  if(this.sequence.indexOf(name) == -1) this.sequence.push(name);
+	  this.sequence.push(name);
 	}
 	
 	this.add_before = function(name, dependency) {
